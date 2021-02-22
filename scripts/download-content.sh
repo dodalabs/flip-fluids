@@ -4,8 +4,12 @@ export CACHE_ZIP_URL=$2
 
 cd ../content
 
-echo "Downloading .blend file..."
-BLEND_FILE_NAME=$(wget "$BLEND_FILE_URL" --content-disposition 2>&1 | sed -n "s/Saving to: \‘\(.*\)\’/\1/p")
+if [ $# -gt 0 ]
+then
+    echo "Downloading .blend file..."
+    BLEND_FILE_NAME=$(wget "$BLEND_FILE_URL" --content-disposition 2>&1 | sed -n "s/Saving to: \‘\(.*\)\’/\1/p")
+fi
+
 
 # If there is a second argument, processes it as a cache folder
 if [ $# -eq 2 ]
