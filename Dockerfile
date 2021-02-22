@@ -1,15 +1,16 @@
 FROM nytimes/blender:latest
 
-RUN mkdir app
+RUN ["mkdir", "scripts", "content"]
 
-RUN cd /tmp/
+RUN apt-get install -y unzip wget
 
-RUN blender -b -P install-flip-fluids.py
+WORKDIR scripts
 
-# Run simulation
-RUN blender -b -P run-simulation.py
+COPY scripts .
+
+RUN ["blender", "-b", "-P", "install-flip-fluids.py"]
 
 # Rclone cache into original project folder in Dropbox
 # RUN rclone copy $CACHE_FOLDER "dropbox:/DodaCo Production/Projects/$PROJECT_ID/01 Project Files/Blender/$CACHE_FOLDER"
 
-CMD ['bin/bash']
+ENTRYPOINT ["/bin/bash", "download-content.sh"]
